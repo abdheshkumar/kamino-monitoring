@@ -8,6 +8,7 @@ import com.abtechsoft.stats.DockerStats.NetworkStats
 import kamon.Kamon
 import kamon.metric.instrument._
 import kamon.metric.{EntityRecorderFactory, GenericEntityRecorder}
+import kamon.system.sigar.DiffRecordingHistogram
 
 class NetworkMetrics(instrumentFactory: InstrumentFactory) extends GenericEntityRecorder(instrumentFactory) {
 
@@ -21,6 +22,7 @@ class NetworkMetrics(instrumentFactory: InstrumentFactory) extends GenericEntity
   val transmitPackets = DiffRecordingHistogram(histogram("tx-packets"))
 
   def update(networkStats: NetworkStats): Unit = {
+    println(networkStats)
     receivedBytes.record(networkStats.`rx_bytes`)
     transmittedBytes.record(networkStats.`tx_bytes`)
     receiveErrors.record(networkStats.`rx_errors`)

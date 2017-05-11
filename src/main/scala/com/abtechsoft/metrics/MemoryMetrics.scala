@@ -8,6 +8,7 @@ import kamon.Kamon
 import com.abtechsoft.stats.DockerStats.MemoryStats
 import kamon.metric.instrument.{InstrumentFactory, Memory}
 import kamon.metric.{EntityRecorderFactory, GenericEntityRecorder}
+import kamon.system.sigar.DiffRecordingHistogram
 
 class MemoryMetrics(instrumentFactory: InstrumentFactory) extends GenericEntityRecorder(instrumentFactory) {
 

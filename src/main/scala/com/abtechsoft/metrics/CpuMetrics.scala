@@ -8,6 +8,7 @@ import com.abtechsoft.stats.DockerStats.CpuStats
 import kamon.Kamon
 import kamon.metric.instrument.InstrumentFactory
 import kamon.metric.{EntityRecorderFactory, GenericEntityRecorder}
+import kamon.system.sigar.DiffRecordingHistogram
 
 class CpuMetrics(instrumentFactory: InstrumentFactory) extends GenericEntityRecorder(instrumentFactory) {
 
@@ -40,9 +41,9 @@ object CpuMetrics extends EntityRecorderFactory[CpuMetrics] {
 
   override def createRecorder(instrumentFactory: InstrumentFactory): CpuMetrics = new CpuMetrics(instrumentFactory)
 
-  def apply(containerAlias: String): (CpuStats) ⇒ Unit = Kamon.metrics.entity(CpuMetrics, containerAlias).update
+  def apply(containerAlias: String): (CpuStats) => Unit = Kamon.metrics.entity(CpuMetrics, containerAlias).update
 
-  def updatePercent(totalCpuUsage: Long, systemCpuUsage: Long, processors: Int) = {
+  def updatePercent(totalCpuUsage: Long, systemCpuUsage: Long, processors: Int): Long = {
     val percent = {
       if (lastObservedCpuUsage > 0L && lastObserverSystemCpuUsage > 0L) {
         calculateCpuPercent(totalCpuUsage, systemCpuUsage, processors)
