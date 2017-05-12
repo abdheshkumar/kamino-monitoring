@@ -12,21 +12,17 @@ libraryDependencies ++= Seq(
   "io.kamon" %% "kamon-statsd" % kamonVersion,
   "io.kamon" %% "kamon-log-reporter" % kamonVersion,
   "io.kamon" %% "kamon-system-metrics" % kamonVersion,
-  "org.aspectj" % "aspectjweaver" % "1.8.1",
-  "com.typesafe.akka" %% "akka-actor" % "2.4.8",
+  "com.typesafe.akka" %% "akka-actor" % "2.4.16",
+  "com.typesafe.akka" %% "akka-slf4j" % "2.4.16",
   "com.typesafe.akka" %% "akka-http" % "10.0.0",
   "org.json4s" %% "json4s-native" % "3.5.2",
-  "org.json4s" %% "json4s-jackson" % "3.5.2"
+  "org.json4s" %% "json4s-jackson" % "3.5.2",
+  "org.slf4j" % "slf4j-log4j12" % "1.7.25"
 )
 
-// Bring the sbt-aspectj settings into this build
 aspectjSettings
 
-// Here we are effectively adding the `-javaagent` JVM startup
-// option with the location of the AspectJ Weaver provided by
-// the sbt-aspectj plugin.
-javaOptions in run <++= AspectjKeys.weaverOptions in Aspectj
+javaOptions <++= AspectjKeys.weaverOptions in Aspectj
 
-// We need to ensure that the JVM is forked for the
-// AspectJ Weaver to kick in properly and do it's magic.
+// when you call "sbt run" aspectj weaving kicks in
 fork in run := true
